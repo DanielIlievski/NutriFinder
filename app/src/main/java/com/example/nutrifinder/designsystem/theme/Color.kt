@@ -1,4 +1,4 @@
-package com.example.nutrifinder.ui.theme
+package com.example.nutrifinder.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 
