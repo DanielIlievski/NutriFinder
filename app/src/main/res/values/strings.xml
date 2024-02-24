@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">NutriFinder</string>
+
+    <string name="txt_food_items_empty">No items match that query</string>
+    <string name="err_invalid_query">Enter at least 3 characters!</string>
+    <string name="txt_label_food_item">Food item</string>
+    <string name="txt_placeholder_food_item">ex. \'chicken\'</string>
+    <string name="content_description_clear_text">Clear text.</string>
+
 </resources>

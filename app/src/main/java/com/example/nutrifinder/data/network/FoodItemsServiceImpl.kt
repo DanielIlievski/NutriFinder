@@ -1,7 +1,9 @@
-package com.example.nutrifinder.data.remote
+package com.example.nutrifinder.data.network
 
-import android.util.Log
-import com.example.nutrifinder.data.remote.dto.FoodItemResponse
+import com.example.nutrifinder.data.network.dto.FoodItemResponse
+import com.example.nutrifinder.data.network.dto.asExternalModel
+import com.example.nutrifinder.domain.model.FoodItem
+import com.example.nutrifinder.util.ApiResult
 import com.example.nutrifinder.util.HttpRoutes
 import com.example.nutrifinder.util.NetworkConstants
 import io.ktor.client.HttpClient
@@ -18,7 +20,7 @@ class FoodItemsServiceImpl @Inject constructor(
     private val client: HttpClient
 ): FoodItemsService {
 
-    override suspend fun getFoodItems(queryText: String): List<FoodItemResponse> {
+    override suspend fun getFoodItems(queryText: String): ApiResult<List<FoodItem>> {
         return try {
             val response: List<FoodItemResponse> = client.get {
                 url {
@@ -29,23 +31,23 @@ class FoodItemsServiceImpl @Inject constructor(
                 }
             }.body()
 
-            response
+            ApiResult.Success(response.map { it.asExternalModel() })
         } catch (e: RedirectResponseException) {
             // Handle 3xx codes
-            Log.d("HelloWorld", "getFoodItems 3xx: ${e.localizedMessage}")
-            emptyList()
+            e.printStackTrace()
+            ApiResult.Failure.Error(e.response.status, e.localizedMessage ?: e.message)
         } catch (e: ClientRequestException) {
             // Handle 4xx codes
-            Log.d("HelloWorld", "getFoodItems 4xx: ${e.localizedMessage}")
-            emptyList()
+            e.printStackTrace()
+            ApiResult.Failure.Error(e.response.status, e.localizedMessage ?: e.message)
         } catch (e: ServerResponseException) {
             // Handle 5xx codes
-            Log.d("HelloWorld", "getFoodItems 5xx: ${e.localizedMessage}")
-            emptyList()
+            e.printStackTrace()
+            ApiResult.Failure.Error(e.response.status, e.localizedMessage ?: e.message)
         } catch (e: Exception) {
             // Handle other exceptions
-            Log.d("HelloWorld", "getFoodItems else: ${e.localizedMessage}")
-            emptyList()
+            e.printStackTrace()
+            ApiResult.Failure.Exception(e.localizedMessage ?: e.message ?: "Unknown exception")
         }
     }
 }

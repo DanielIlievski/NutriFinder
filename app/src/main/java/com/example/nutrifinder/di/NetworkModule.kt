@@ -1,7 +1,7 @@
 package com.example.nutrifinder.di
 
-import com.example.nutrifinder.data.remote.FoodItemsService
-import com.example.nutrifinder.data.remote.FoodItemsServiceImpl
+import com.example.nutrifinder.data.network.FoodItemsService
+import com.example.nutrifinder.data.network.FoodItemsServiceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
